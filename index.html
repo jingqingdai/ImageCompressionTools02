@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片压缩工具 - 苹果风格设计</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- 引入苹果系统字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="app-header">
+        <div class="container">
+            <h1>图片压缩工具</h1>
+            <p>上传、预览、压缩、下载 - 轻松处理图片文件</p>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="container">
+        <!-- 上传区域 -->
+        <section class="upload-section">
+            <div class="upload-area" id="upload-area">
+                <img src="https://cdn.jsdelivr.net/npm/heroicons@1.0.1/outline/upload.svg" alt="上传图标" class="upload-icon">
+                <p>拖放图片到这里或者</p>
+                <div class="upload-button-container">
+                    <label for="file-input" class="upload-button">选择文件</label>
+                    <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" multiple>
+                </div>
+            </div>
+            <div class="upload-info">
+                <p>已上传: <span id="upload-count">0</span> 张图片</p>
+            </div>
+        </section>
+
+        <!-- 控制面板 -->
+        <section class="control-panel">
+            <div class="control-item">
+                <label for="quality-slider">压缩质量</label>
+                <div class="slider-container">
+                    <input type="range" id="quality-slider" min="1" max="100" value="80">
+                    <span id="quality-value">80%</span>
+                </div>
+            </div>
+            <div class="control-item">
+                <label for="max-width">最大宽度 (可选)</label>
+                <input type="number" id="max-width" placeholder="原始宽度">
+            </div>
+            <div class="control-item">
+                <label for="format-select">输出格式</label>
+                <select id="format-select">
+                    <option value="same">保持原格式</option>
+                    <option value="jpeg">JPEG</option>
+                    <option value="png">PNG</option>
+                    <option value="webp">WebP</option>
+                </select>
+            </div>
+            <div class="control-actions">
+                <button id="compress-all-btn" class="primary-button" disabled>压缩全部</button>
+                <button id="download-all-btn" class="secondary-button" disabled>下载全部</button>
+            </div>
+        </section>
+
+        <!-- 图片预览和结果区域 -->
+        <section class="images-container" id="images-container">
+            <!-- 图片项将通过JavaScript动态添加 -->
+            <div class="empty-state" id="empty-state">
+                <p>上传图片后在此处查看预览和压缩结果</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="app-footer">
+        <div class="container">
+            <p>使用HTML5、CSS3和JavaScript技术构建</p>
+            <p>© 2025 图片压缩工具</p>
+        </div>
+    </footer>
+
+    <!-- 图片项模板 (隐藏) -->
+    <template id="image-item-template">
+        <div class="image-item">
+            <div class="image-header">
+                <input type="checkbox" class="image-checkbox">
+                <span class="image-name"></span>
+                <button class="image-delete">删除</button>
+            </div>
+            <div class="image-preview-container">
+                <div class="image-preview original">
+                    <div class="preview-header">原始图片</div>
+                    <img class="preview-img" alt="原始图片预览">
+                    <div class="image-info">
+                        <span class="image-size"></span>
+                        <span class="image-dimensions"></span>
+                    </div>
+                </div>
+                <div class="image-preview compressed">
+                    <div class="preview-header">压缩后</div>
+                    <img class="preview-img" alt="压缩图片预览">
+                    <div class="image-info">
+                        <span class="image-size"></span>
+                        <span class="image-dimensions"></span>
+                        <span class="compression-ratio"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="image-actions">
+                <button class="compress-button">压缩</button>
+                <a class="download-button" download>下载</a>
+            </div>
+        </div>
+    </template>
+
+    <!-- 脚本 -->
+    <script src="js/app.js"></script>
+</body>
+</html> 
