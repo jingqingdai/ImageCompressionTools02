@@ -562,4 +562,63 @@ document.addEventListener('DOMContentLoaded', () => {
         const baseName = originalName.replace(/\.[^.]+$/, '');
         return `${baseName}-compressed.${format}`;
     }
+
+    // 聊天框与AI交互逻辑
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    // 发送消息到聊天框
+    function appendMessage(role, content) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg ' + (role === 'user' ? 'user' : 'ai');
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble';
+        bubble.textContent = content;
+        msgDiv.appendChild(bubble);
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // 发送消息到AI
+    async function sendToAI(message) {
+        appendMessage('user', message);
+        chatInput.value = '';
+        appendMessage('ai', '思考中...');
+        try {
+            const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer sk-bdc3bb52ed51XXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: [
+                        { role: 'system', content: 'You are a helpful assistant' },
+                        { role: 'user', content: message }
+                    ],
+                    stream: false
+                })
+            });
+            const data = await res.json();
+            chatMessages.removeChild(chatMessages.lastChild);
+            if (data.choices && data.choices[0] && data.choices[0].message) {
+                appendMessage('ai', data.choices[0].message.content);
+            } else {
+                appendMessage('ai', 'AI未返回有效回复，请稍后再试。');
+            }
+        } catch (e) {
+            chatMessages.removeChild(chatMessages.lastChild);
+            appendMessage('ai', '请求失败，请检查网络或稍后再试。');
+        }
+    }
+
+    if (chatForm && chatInput && chatMessages) {
+        chatForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const msg = chatInput.value.trim();
+            if (msg) sendToAI(msg);
+        });
+    }
 }); 

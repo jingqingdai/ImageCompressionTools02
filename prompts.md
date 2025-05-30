@@ -6,3 +6,27 @@
 5，支持批量上传，并且可以展示上传的图片数量。也支持批量选中下载的方式。
 
 你是一个非常出色的工程师和设计师，请帮助完成功能设计的基础上，帮我实现出色的有苹果风格的视觉设计。
+
+2025/05/30 追加
+@codebase 保持网站功能不变，在网站主页右下角创建一个聊天框，可以用来打字发送消息和ai进行交互，AI大模型的api请求示例如下：
+
+API key:
+sk-bdc3bb52ed51XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+代码请求调用示例：
+# Please install OpenAI SDK first: `pip3 install openai`
+
+from openai import OpenAI
+
+client = OpenAI(api_key="<DeepSeek API Key>", base_url="https://api.deepseek.com")
+
+response = client.chat.completions.create(
+    model="deepseek-chat",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant"},
+        {"role": "user", "content": "Hello"},
+    ],
+    stream=False
+)
+
+print(response.choices[0].message.content)
